@@ -11,7 +11,7 @@
 	<title>@yield('title')</title>
 
 	<!-- jquery -->
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 	<!-- Datatable -->
 	@yield('dataTable')
 

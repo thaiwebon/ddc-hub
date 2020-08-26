@@ -12,5 +12,12 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('authen.login');
+    // return view('welcome');
 });
+
+Route::get('/hub', function () {
+    return view('hub.hub');
+})->name('hub');
+
+Route::get('authen', 'Authen\authenController@Authen')->name('Authen');
