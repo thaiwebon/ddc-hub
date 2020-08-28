@@ -4,7 +4,10 @@
 	<div class="title m-b-md">
 		<img src="{{URL::asset('images/icon/it_logo.png')}}" width="80%">
 	</div>
-
+	<div>
+		<label><h2>{{ Session::get('name') }}</h1></label><br/>
+		<label><h3>หน่วยงาน {{ Session::get('office') }}</h2></label>
+	</div>
 	<div class="card card-1" onclick="window.location.href = '{{ url('formService') }}';">
 		<img src="{{URL::asset('images/icon/service_icon.png')}}" width="200" height="200">
 		<label>Service</label>

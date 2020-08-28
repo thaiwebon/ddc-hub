@@ -11,13 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-	return view('authen.login');
-    // return view('welcome');
+// Route::get('/', function () {
+// 	return view('authen.login');
+//     // return view('welcome');
+// });
+Route::get('/', 'Authen\authenController@login')->name('index');
+Route::get('/authen', 'Authen\authenController@Authen')->name('Authen');
+
+Route::get('hub', 'hub\hubController@hub')->name('hub');
+
+
+Route::get('/clear-cache',function(){
+	Artisan::call('cache:clear');
+	return "Cache is cleared";
 });
 
-Route::get('/hub', function () {
-    return view('hub.hub');
-})->name('hub');
-
-Route::get('authen', 'Authen\authenController@Authen')->name('Authen');
+Route::get('/clear-view',function(){
+	Artisan::call('view:clear');
+	return "View is cleared";
+});
