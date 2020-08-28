@@ -18,7 +18,7 @@
 Route::get('/', 'Authen\authenController@login')->name('index');
 Route::get('/authen', 'Authen\authenController@Authen')->name('Authen');
 
-Route::get('hub', 'hub\hubController@hub')->name('hub');
+Route::get('hub', 'hub\hubController@chkAuthen')->name('hub');
 
 
 Route::get('/clear-cache',function(){

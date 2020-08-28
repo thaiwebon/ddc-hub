@@ -9,7 +9,7 @@ use redirect;
 
 class hubController extends Controller
 {
-	public function hub()
+	public function chkAuthen()
 	{
 		if (Session::has('name')) {
     		return view('hub.hub');

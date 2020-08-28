@@ -34,10 +34,10 @@
 		<label>VM</label>
 	</div>
 	
-	<div class="card card-1" onclick="window.location.href = '{{ url('commentService') }}';">
+	<!-- <div class="card card-1" onclick="window.location.href = '{{ url('commentService') }}';">
 		<img src="{{URL::asset('images/icon/comment_icon.png')}}" width="200" height="200">
 		<label>Comment</label>
-	</div>
+	</div> -->
 	<div id="myModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">

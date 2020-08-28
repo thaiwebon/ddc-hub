@@ -12,7 +12,6 @@ class authenController extends Controller
 	public function login()
 	{
 		if (Session::has('name')) {
-			// return view('hub.hub');
     		return redirect()->route('hub');
     	} else {
     		return view('authen.login');
