@@ -20,6 +20,7 @@ Route::get('/authen', 'Authen\authenController@Authen')->name('Authen');
 
 Route::get('hub', 'hub\hubController@chkAuthen')->name('hub');
 
+Route::get('service', 'Service\serviceController@GetData')->name('service');
 
 Route::get('/clear-cache',function(){
 	Artisan::call('cache:clear');
