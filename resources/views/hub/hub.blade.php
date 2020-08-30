@@ -5,10 +5,14 @@
 		<img src="{{URL::asset('images/icon/it_logo.png')}}" width="80%">
 	</div>
 	<div>
-		<label><h2>{{ Session::get('name') }}</h1></label><br/>
-		<label><h3>หน่วยงาน {{ Session::get('office') }}</h2></label>
+		<label><h4>{{ Session::get('name') }}</h4></label><br/>
+		<label><h4>หน่วยงาน {{ Session::get('office') }}</h4></label><br/>
+		<div class="card card-1" style="width: 150px; height: 70px;" onclick="window.location.href = '{{ route('LogOut') }}';">
+		<label>LOGOUT</label>
+		<img src="{{URL::asset('images/icon/logout.png')}}" width="50" height="50">
+		</div>
 	</div>
-	<div class="card card-1" onclick="window.location.href = '{{ url('formService') }}';">
+	<div class="card card-1" onclick="window.location.href = '{{ route('service') }}';">
 		<img src="{{URL::asset('images/icon/service_icon.png')}}" width="200" height="200">
 		<label>Service</label>
 	</div>

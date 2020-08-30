@@ -25,6 +25,7 @@ class authenController extends Controller
 		$data_search = UserAccount::where('userid','=', $username)->get();
 		// dd($data_search[0]->username);
 		// session(['name' => $data_search[0]->id]);
+		Session::put('userid', $data_search[0]->userid);
 		Session::put('name', $data_search[0]->username);
 		Session::put('office', $data_search[0]->office_text);
 		// session()->forget(['name']);

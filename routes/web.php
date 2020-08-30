@@ -18,9 +18,12 @@
 Route::get('/', 'Authen\authenController@login')->name('index');
 Route::get('/authen', 'Authen\authenController@Authen')->name('Authen');
 
-Route::get('hub', 'hub\hubController@chkAuthen')->name('hub');
+Route::get('/hub', 'Hub\hubController@chkAuthen')->name('hub');
 
-Route::get('service', 'Service\serviceController@GetData')->name('service');
+Route::get('/service', 'Service\serviceController@chkAuthen')->name('service');
+
+
+Route::get('/logout', 'Logout\logoutController@LogOut')->name('LogOut');
 
 Route::get('/clear-cache',function(){
 	Artisan::call('cache:clear');
