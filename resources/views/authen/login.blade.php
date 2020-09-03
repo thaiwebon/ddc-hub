@@ -1,12 +1,12 @@
 @extends('authen.template')
 @section('content')
-<div class="containerform">
-	<h1>login</h1>
-	<div class="form-input">
-		<input type="text" id="username" onkeyup="liveSearch()">
-		<label for="username"><span>User Account Internet</span></label><br/>
+	<div class="containerform">
+		<h1>login</h1>
+		<div class="form-input">
+			<input type="text" id="username" onkeyup="liveSearch()">
+			<label for="username"><span>User Account Internet</span></label><br/>
+		</div>
 	</div>
-</div>
 @endsection
 <script type="text/javascript">
 	function liveSearch()

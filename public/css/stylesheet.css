@@ -1,0 +1,42 @@
+@import 'https://fonts.googleapis.com/css?family=Kanit|Prompt';
+h3{
+    font-family: 'Prompt';
+}
+.btnSubmit{
+    background-color: #3366FF;
+    border: 0px;
+    border-radius: 3px;
+    color: white;
+    width: 100px;
+    height: 40px;
+}
+
+.btnSubmit:hover{
+    background-color: #3399FF;
+}
+
+/*popup*/
+.popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 30%;
+    position: relative;
+    transition: all 2s ease-in-out;
+}
+.popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+.popup .content {
+    max-height: 30%;
+    overflow: auto;
+}
+/*end popup*/

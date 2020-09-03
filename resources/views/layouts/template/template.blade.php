@@ -11,7 +11,7 @@
 	<title>@yield('title')</title>
 
 	<!-- jquery -->
-	<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<!-- Datatable -->
 	@yield('dataTable')
 
@@ -26,11 +26,11 @@
 	<link rel="stylesheet" href="{{URL::asset('assets/theme/css/style.css')}}">
 	<link rel="stylesheet" href="{{URL::asset('assets/mobirise/css/mbr-additional.css')}}">
 
-	<!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link href="{{URL::asset('css/w3.css')}}" rel="stylesheet">
-	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-	<script type="text/JavaScript" src="{{URL::asset('js/forms.js')}}"></script>
-	<script type="text/JavaScript" src="{{URL::asset('js/sha512.js')}}"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!-- <script type="text/JavaScript" src="{{URL::asset('public/js/forms.js')}}"></script> -->
+	<!-- <script type="text/JavaScript" src="{{URL::asset('js/sha512.js')}}"></script> -->
 	@yield('javascript')
 
 	<!-- Styles -->
