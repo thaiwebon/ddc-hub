@@ -45,7 +45,7 @@ class serviceController extends Controller
 		// 					'data_menu'	=> $data_menurepair
 		// 				]
 		// 			);
-		dd("test");
+		// dd("test");
 		return view ('service.form');
     }
 }

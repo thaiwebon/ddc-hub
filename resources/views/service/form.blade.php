@@ -14,7 +14,7 @@ DDC SERVICE
 		<div class="row" style="padding-bottom: 100px;">
 			<div class="col-sm-12">
 				<center><h3><label>รายการแจ้งซ่อม</label></h3></center>
-				<table id="tableDashboard" class="display" style="width:100%">
+				<table id="tableService" class="display" style="width:100%">
 					<thead>
 						<!-- <tr>
 							<th>หมายเลขงาน</th>
@@ -36,7 +36,7 @@ DDC SERVICE
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#tableDashboard').DataTable({
+			$('#tableService').DataTable({
 				// "order": [[ 0, "desc" ]],
 				"scrollX": true
 			});
