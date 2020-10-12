@@ -20,8 +20,25 @@ Route::get('/authen', 'Authen\authenController@Authen')->name('Authen');
 
 Route::get('/hub', 'Hub\hubController@chkAuthen')->name('hub');
 
-Route::get('/service', 'Service\serviceController@chkAuthen')->name('service');
+Route::prefix('service')->group(function(){
+	Route::get('/FormService', 'Service\serviceController@chkAuthen')->name('service.form');
+});
 
+Route::prefix('mailgothai')->group(function(){
+
+});
+
+Route::prefix('ad')->group(function(){
+
+});
+
+Route::prefix('vm')->group(function(){
+
+});
+
+Route::prefix('vpn')->group(function(){
+
+});
 
 Route::get('/logout', 'Logout\logoutController@LogOut')->name('LogOut');
 

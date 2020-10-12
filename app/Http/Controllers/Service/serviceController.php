@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Service;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\DBservice;
+use App\DBdepartment;
+use App\DBmenuservice;
 use Session;
 use redirect;
 
@@ -12,40 +15,72 @@ class serviceController extends Controller
     public function chkAuthen()
     {
     	if (Session::has('name')) {
-    		$getdata = $this->GetData();
-    		return $getdata;
+    		$ServiceLoad = $this->ServiceLoad();
+    		return $ServiceLoad;
     	} else {
     		return redirect()->route('index');
     	}
     }
 
-    public function GetData()
+    public function GetAllDataService()
     {
-  //   	$data_query = DBformRepair::join('db_menurepair', 'db_formrepair.menurepair_id', '=' , 'db_menurepair.id')
-		// 				->where('status', 'แจ้งซ่อม')
-		// 				->orWhere('status', 'กำลังดำเนินการ')
-		// 				->get(
-		// 						[
-		// 							'db_formrepair.id',
-		// 							'db_formrepair.name',
-		// 							'db_formrepair.department',
-		// 							'db_formrepair.data_date',
-		// 							'db_formrepair.data_time',
-		// 							'db_menurepair.name AS repairName',
-		// 							'db_formrepair.status'
-		// 						]
-		// 					);
-		// // dd($data_query);
+    	$query_service = DBservice::
+    						select(
+    								'service_id',
+    								'data_date',
+    								'name',
+    								'department_id',
+    								'menuservice_id',
+    								'status'
+    							)
+    						->get();
+		return $query_service;
+    }
 
-		// $data_menurepair = DBmenuRepair::all();
+    public function GetDataDepartment()
+    {
+    	$query_department = DBdepartment::select('id','department_name')->get();
 
-		// return view ('service.formpage',
-		// 				[
-		// 					'data' 		=> $data_query,
-		// 					'data_menu'	=> $data_menurepair
-		// 				]
-		// 			);
-		// dd("test");
-		return view ('service.form');
+    	foreach ($query_department as $value_department) {
+    		$department_ref[$value_department->id] = trim($value_department->department_name);
+    	}
+
+    	return $department_ref;
+    }
+
+    public function GetDataMenuService()
+    {
+    	$query_menuservice = DBmenuservice::select('id','service_name')->get();
+
+    	foreach ($query_menuservice as $value_menuservice) {
+    		$menuservice_ref[$value_menuservice->id] = trim($value_menuservice->service_name);
+    	}
+
+    	return $menuservice_ref;
+    }
+
+    public function InsertService()
+    {
+
+    }
+
+    public function ServiceLoad()
+    {
+    	$data_department 	=	$this->GetDataDepartment();
+    	$data_service		=	$this->GetAllDataService();
+    	$data_menuservice	=	$this->GetDataMenuService();
+    	$status = [
+    				'0'	=>	'ยกเลิกการแจ้งซ่อม',
+    				'1'	=>	'แจ้งซ่อม',
+    				'2'	=>	'กำลังดำเนินการ',
+    				'3'	=>	'เสร็จสิ้น'
+    			];
+
+    	return view('service.form',[
+    		'data_service' 		=>	$data_service,
+    		'data_department'	=>	$data_department,
+    		'data_menuservice'	=>	$data_menuservice,
+    		'data_status'		=>	$status
+    	]);
     }
 }

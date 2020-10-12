@@ -12,7 +12,7 @@
 			<img src="{{URL::asset('images/icon/logout.png')}}" width="50" height="50">
 			</div>
 		</div>
-		<div class="card card-1" onclick="window.location.href = '{{ route('service') }}';">
+		<div class="card card-1" onclick="window.location.href = '{{ route('service.form') }}';">
 			<img src="{{URL::asset('images/icon/service_icon.png')}}" width="200" height="200">
 			<label>Service</label>
 		</div>

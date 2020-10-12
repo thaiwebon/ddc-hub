@@ -15,28 +15,13 @@
 	<!-- Datatable -->
 	@yield('dataTable')
 
-	<link rel="stylesheet" href="{{URL::asset('assets/web/assets/mobirise-icons/mobirise-icons.css')}}">
-	<link rel="stylesheet" href="{{URL::asset('assets/tether/tether.min.css')}}">
-	<link rel="stylesheet" href="{{URL::asset('assets/soundcloud-plugin/style.css')}}">
-	<link rel="stylesheet" href="{{URL::asset('assets/bootstrap/css/bootstrap.min.css')}}">
-	<link rel="stylesheet" href="{{URL::asset('assets/bootstrap/css/bootstrap-grid.min.css')}}">
-	<link rel="stylesheet" href="{{URL::asset('assets/bootstrap/css/bootstrap-reboot.min.css')}}">
-	<link rel="stylesheet" href="{{URL::asset('assets/dropdown/css/style.css')}}">
-	<link rel="stylesheet" href="{{URL::asset('assets/socicon/css/styles.css')}}">
-	<link rel="stylesheet" href="{{URL::asset('assets/theme/css/style.css')}}">
-	<link rel="stylesheet" href="{{URL::asset('assets/mobirise/css/mbr-additional.css')}}">
+	@include('layouts.css.css')
+	@yield('css-custom-script')
+  	@yield('css-custom')
 
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	<link href="{{URL::asset('css/w3.css')}}" rel="stylesheet">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<!-- <script type="text/JavaScript" src="{{URL::asset('public/js/forms.js')}}"></script> -->
-	<!-- <script type="text/JavaScript" src="{{URL::asset('js/sha512.js')}}"></script> -->
 	@yield('javascript')
-
-	<!-- Styles -->
-    <link href="{{URL::asset('css/stylesheet.css')}}" rel="stylesheet">
-
-    <!-- script popup -->
+	
     <script data-require="bootstrap@*" data-semver="3.1.1" src="{{URL::asset('js/bootstrap.min.js')}}"></script>
 
     <!-- canvas js -->
@@ -50,13 +35,8 @@
 		@yield('content')
 	</section>
 	@include('layouts.footer.footer')
-	<script src="{{URL::asset('assets/popper/popper.min.js')}}"></script>
-	<script src="{{URL::asset('assets/tether/tether.min.js')}}"></script>
-	<script src="{{URL::asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
-	<script src="{{URL::asset('assets/smoothscroll/smooth-scroll.js')}}"></script>
-	<script src="{{URL::asset('assets/dropdown/js/script.min.js')}}"></script>
-	<script src="{{URL::asset('assets/touchswipe/jquery.touch-swipe.min.js')}}"></script>
-	<script src="{{URL::asset('assets/theme/js/script.js')}}"></script>
-	<script src="{{URL::asset('assets/formoid/formoid.min.js')}}"></script>
+	@include('layouts.js.js')
+	@yield('js-custom-script')
+  	@yield('js-custom')
 </body>
 </html>
