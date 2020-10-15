@@ -21,7 +21,10 @@ Route::get('/authen', 'Authen\authenController@Authen')->name('Authen');
 Route::get('/hub', 'Hub\hubController@chkAuthen')->name('hub');
 
 Route::prefix('service')->group(function(){
-	Route::get('/FormService', 'Service\serviceController@chkAuthen')->name('service.form');
+	Route::get('/FormService', 'Service\serviceController@chkAuthen')->name('ServiceForm');
+	Route::post('/ViewService', 'Service\serviceController@ViewService')->name('ServiceView');
+	Route::post('/InsertService', 'Service\serviceController@InsertService')->name('ServiceInsert');
+	Route::post('/DeleteService', 'Service\serviceController@DeleteService')->name('ServiceDelete');
 });
 
 Route::prefix('mailgothai')->group(function(){
@@ -47,7 +50,18 @@ Route::get('/clear-cache',function(){
 	return "Cache is cleared";
 });
 
+Route::get('/config-clear',function(){
+	Artisan::call('config:clear');
+	return "Config is cleared";
+});
+
+Route::get('/config-cache',function(){
+	Artisan::call('config:cache');
+	return "Config and Cache is cleared";
+});
+
 Route::get('/clear-view',function(){
 	Artisan::call('view:clear');
 	return "View is cleared";
 });
+

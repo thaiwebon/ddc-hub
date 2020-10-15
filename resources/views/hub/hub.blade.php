@@ -6,13 +6,13 @@
 		</div>
 		<div>
 			<label><h4>{{ Session::get('name') }}</h4></label><br/>
-			<label><h4>หน่วยงาน {{ Session::get('office') }}</h4></label><br/>
+			<label><h4>หน่วยงาน {{ Session::get('department') }}</h4></label><br/>
 			<div class="card card-1" style="width: 150px; height: 70px;" onclick="window.location.href = '{{ route('LogOut') }}';">
 			<label>LOGOUT</label>
 			<img src="{{URL::asset('images/icon/logout.png')}}" width="50" height="50">
 			</div>
 		</div>
-		<div class="card card-1" onclick="window.location.href = '{{ route('service.form') }}';">
+		<div class="card card-1" onclick="window.location.href = '{{ route('ServiceForm') }}';">
 			<img src="{{URL::asset('images/icon/service_icon.png')}}" width="200" height="200">
 			<label>Service</label>
 		</div>

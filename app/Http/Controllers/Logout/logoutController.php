@@ -11,7 +11,7 @@ class logoutController extends Controller
     public function LogOut()
     {
     	session()->forget('name');
-    	session()->forget('office');
+    	session()->forget('department');
 		session()->flush();
 		return redirect()->route('index');
     }

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\DBservice;
 use App\DBdepartment;
 use App\DBmenuservice;
+use App\DBstaff;
 use Session;
 use redirect;
 
@@ -24,28 +25,19 @@ class serviceController extends Controller
 
     public function GetAllDataService()
     {
-    	$query_service = DBservice::
-    						select(
-    								'service_id',
-    								'data_date',
-    								'name',
-    								'department_id',
-    								'menuservice_id',
-    								'status'
-    							)
-    						->get();
-		return $query_service;
-    }
-
-    public function GetDataDepartment()
-    {
-    	$query_department = DBdepartment::select('id','department_name')->get();
-
-    	foreach ($query_department as $value_department) {
-    		$department_ref[$value_department->id] = trim($value_department->department_name);
-    	}
-
-    	return $department_ref;
+    	$userid = Session::get('userid');
+    	$query_all_service = DBservice::
+        						select(
+        							'service_id',
+        							'data_date',
+        							'name',
+        							'department',
+        							'menuservice_id',
+        							'status'
+        						)
+        						->where('userid',Session::get('userid'))
+        						->get();
+		return $query_all_service;
     }
 
     public function GetDataMenuService()
@@ -59,28 +51,128 @@ class serviceController extends Controller
     	return $menuservice_ref;
     }
 
-    public function InsertService()
+    public function GetDataStaff()
     {
+        $query_staff = DBstaff::select('id','name')->get();
 
+        foreach ($query_staff as $value_staff) {
+            $staff_ref[$value_staff->id] = trim($value_staff->name);
+        }
+
+       return $staff_ref;
+    }
+
+    public function GetDataFirstService(int $value)
+    {
+        $query_service = DBservice::
+                            select(
+                                'service_id',
+                                'data_date',
+                                'name',
+                                'department',
+                                'tel',
+                                'building',
+                                'floor',
+                                'menuservice_id',
+                                'description',
+                                'picture',
+                                'staff_id',
+                                'data_date_start',
+                                'data_date_success',
+                                'status',
+                                'comment'
+                            )
+                            ->where('service_id',$value)
+                            ->first();
+
+        return $query_service;
     }
 
     public function ServiceLoad()
     {
-    	$data_department 	=	$this->GetDataDepartment();
     	$data_service		=	$this->GetAllDataService();
     	$data_menuservice	=	$this->GetDataMenuService();
     	$status = [
-    				'0'	=>	'ยกเลิกการแจ้งซ่อม',
-    				'1'	=>	'แจ้งซ่อม',
-    				'2'	=>	'กำลังดำเนินการ',
-    				'3'	=>	'เสร็จสิ้น'
-    			];
+    		'0'	=>	'ยกเลิกการแจ้งซ่อม',
+    		'1'	=>	'แจ้งซ่อม',
+    		'2'	=>	'กำลังดำเนินการ',
+    		'3'	=>	'เสร็จสิ้น'
+    	];
 
-    	return view('service.form',[
+    	return view('service.form', [
     		'data_service' 		=>	$data_service,
-    		'data_department'	=>	$data_department,
     		'data_menuservice'	=>	$data_menuservice,
     		'data_status'		=>	$status
     	]);
     }
+
+    public function ViewService(Request $request)
+    {
+        $data_service       =   $this->GetDataFirstService($request->service_id);
+        $data_menuservice   =   $this->GetDataMenuService();
+        $data_staff         =   $this->GetDataStaff();
+        $status = [
+            '0' =>  'ยกเลิกการแจ้งซ่อม',
+            '1' =>  'แจ้งซ่อม',
+            '2' =>  'กำลังดำเนินการ',
+            '3' =>  'เสร็จสิ้น'
+        ];
+
+        return view('service.view', [
+            'data_service'      =>  $data_service,
+            'data_menuservice'  =>  $data_menuservice,
+            'data_staff'        =>  $data_staff,
+            'data_status'       =>  $status
+        ]);
+    }
+
+    public function InsertService(Request $request)
+    {
+    	if ($request->hasFile('picture')) {
+    		$file_picture = $request->file('picture');
+
+    		if (!$file_picture->isValid()){
+                return back()->with('error', $file->getErrorMessage());
+            }
+
+            $filename_picture = time(). '.' . $file_picture->getClientOriginalExtension();
+            $upload = $file_picture->storeAs('public/img/service', $filename_picture);
+    	} else {
+    		$filename_picture = NULL;
+    	}
+
+    	$data_service = new DBservice;
+
+    	$data_service->service_id		=	time().$request->building.$request->floor;
+    	$data_service->userid			=	Session::get('userid');
+    	$data_service->data_date 		=	date('Y-m-d H:i:s');
+    	$data_service->name 			=	$request->name;
+    	$data_service->department 		= 	$request->department;
+    	$data_service->tel 				=	$request->tel;
+    	$data_service->building			=	$request->building;
+    	$data_service->floor 			=	$request->floor;
+    	$data_service->menuservice_id	=	$request->menuservice_id;
+    	$data_service->description 		=	$request->description;
+    	$data_service->picture 			=	$filename_picture;
+    	$data_service->status 			=	$request->status;
+
+    	try {
+	    	if ($data_service->save()) {
+	    		return redirect()->back();
+	    	} else {
+	    		return redirect()->back();
+	    	}
+	    } catch(\Exception $e){
+	       echo $e->getMessage();
+	    }
+    }
+
+    public function DeleteService(Request $request) {
+    	$data_delete = [
+    		'status' => $request->status
+    	];
+
+    	$delete_service = DBservice::where('service_id',$request->service_id)
+    						->update($data_delete);
+    } 
 }
