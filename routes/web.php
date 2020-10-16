@@ -21,10 +21,17 @@ Route::get('/authen', 'Authen\authenController@Authen')->name('Authen');
 Route::get('/hub', 'Hub\hubController@chkAuthen')->name('hub');
 
 Route::prefix('service')->group(function(){
-	Route::get('/FormService', 'Service\serviceController@chkAuthen')->name('ServiceForm');
-	Route::post('/ViewService', 'Service\serviceController@ViewService')->name('ServiceView');
-	Route::post('/InsertService', 'Service\serviceController@InsertService')->name('ServiceInsert');
-	Route::post('/DeleteService', 'Service\serviceController@DeleteService')->name('ServiceDelete');
+	Route::prefix('users')->group(function(){
+		Route::get('/FormService', 'Service\serviceController@chkAuthen')->name('ServiceForm');
+		Route::post('/ViewService', 'Service\serviceController@ViewService')->name('ServiceView');
+		Route::post('/InsertService', 'Service\serviceController@InsertService')->name('ServiceInsert');
+		Route::post('/DeleteService', 'Service\serviceController@DeleteService')->name('ServiceDelete');
+	});
+
+	Route::prefix('admin')->group(function(){
+		Route::get('/AdminViewService/{value}', 'Service\serviceController@AdminViewService')->name('ServiceAdminView');
+		Route::post('/ReciveService', 'Service\serviceController@ReciveService')->name('ServiceRecive');
+	});
 });
 
 Route::prefix('mailgothai')->group(function(){

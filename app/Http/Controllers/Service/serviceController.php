@@ -79,8 +79,9 @@ class serviceController extends Controller
                                 'staff_id',
                                 'data_date_start',
                                 'data_date_success',
+                                'comment',
                                 'status',
-                                'comment'
+                                'data_date_cancel'
                             )
                             ->where('service_id',$value)
                             ->first();
@@ -111,6 +112,7 @@ class serviceController extends Controller
         $data_service       =   $this->GetDataFirstService($request->service_id);
         $data_menuservice   =   $this->GetDataMenuService();
         $data_staff         =   $this->GetDataStaff();
+        $active             =   $request->active;
         $status = [
             '0' =>  'ยกเลิกการแจ้งซ่อม',
             '1' =>  'แจ้งซ่อม',
@@ -122,7 +124,28 @@ class serviceController extends Controller
             'data_service'      =>  $data_service,
             'data_menuservice'  =>  $data_menuservice,
             'data_staff'        =>  $data_staff,
-            'data_status'       =>  $status
+            'data_status'       =>  $status,
+            'active'            =>  $active
+        ]);
+    }
+
+    public function AdminViewService(Request $request)
+    {
+        $data_service       =   $this->GetDataFirstService($request->value);
+        $data_menuservice   =   $this->GetDataMenuService();
+        $data_staff         =   $this->GetDataStaff();
+        $status = [
+            '0' =>  'ยกเลิกการแจ้งซ่อม',
+            '1' =>  'แจ้งซ่อม',
+            '2' =>  'กำลังดำเนินการ',
+            '3' =>  'เสร็จสิ้น'
+        ];
+
+        return view('service.admin_view' ,[
+            'data_service'      =>  $data_service,
+            'data_menuservice'  =>  $data_menuservice,
+            'data_staff'        =>  $data_staff,
+            'data_status'       =>  $status 
         ]);
     }
 
@@ -158,6 +181,37 @@ class serviceController extends Controller
 
     	try {
 	    	if ($data_service->save()) {
+                // $stickerPkg = 2; //stickerPackageId
+                // $stickerId = 34;
+                // $image_thumbnail_url = 'http://ddc-hub.local/storage/img/service/'.$filename_picture; 
+                // $image_fullsize_url = 'http://ddc-hub.local/storage/img/service/'.$filename_picture;
+
+
+                define("LINEAPI","https://notify-api.line.me/api/notify");
+                define("MESSAGE","งานแจ้งซ่อม\nหมายเลขงาน ::".$filename_picture);
+                // define("MESSAGE","งานแจ้งซ่อม");
+                define("TOKEN","DKzPT1p24lgNf56AWrFMKeoZSTHQm2OMkN53Hh5DW1Y");
+                $data = array(
+                            'message' => MESSAGE,
+                            // 'stickerPackageId'=>$stickerPkg,
+                            // 'stickerId'=>$stickerId,
+                            // 'imageThumbnail' => $image_thumbnail_url,
+                            // 'imageFullsize' => $image_fullsize_url,
+                        );
+                $data = http_build_query($data,'','&');
+                $headerOptions = array(
+                    'http'=>array(
+                        'method'=>'POST',
+                        'header'=> "Content-Type: application/x-www-form-urlencoded\r\n"
+                        ."Authorization: Bearer ".TOKEN."\r\n"
+                        ."Content-Length: ".strlen($data)."\r\n",
+                        'content' => $data
+                    ),
+                );
+                $context = stream_context_create($headerOptions);
+                $result = file_get_contents(LINEAPI,FALSE,$context);
+                $res = json_decode($result);
+                
 	    		return redirect()->back();
 	    	} else {
 	    		return redirect()->back();
@@ -167,12 +221,30 @@ class serviceController extends Controller
 	    }
     }
 
-    public function DeleteService(Request $request) {
+    public function DeleteService(Request $request)
+    {
     	$data_delete = [
-    		'status' => $request->status
+            'comment'           =>  $request->comment,
+    		'status'            =>  $request->status,
+            'data_date_cancel'  =>  date('Y-m-d H:i:s')
     	];
 
     	$delete_service = DBservice::where('service_id',$request->service_id)
     						->update($data_delete);
-    } 
+        return redirect()->route('ServiceForm');
+    }
+
+    public function ReciveService(Request $request)
+    {
+        $data_recive_service = [
+            'staff_id'          =>  $request->staff_id,
+            'status'            =>  $request->status,
+            'data_date_start'   =>  date('Y-m-d H:i:s')
+        ];
+
+        $update_staffid_service = DBservice::where('service_id',$request->service_id)
+                                ->update($data_recive_service);
+
+        return redirect()->route('ServiceForm');
+    }
 }

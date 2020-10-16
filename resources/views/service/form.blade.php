@@ -52,17 +52,18 @@
 									<form method="post" action="{{ route('ServiceView') }}">
 										@csrf
 										<input type="hidden" name="service_id" value="{{ $value_service->service_id }}">
+										<input type="hidden" name="active" value="view">
 										<button style="border: none; padding: 0; background: none;" type="submit">
 											<img src="{{ URL::asset('assets/images/icon-repair.jpg') }}" width="40">
 										</button>
 									</form>
 								</td>
 								<td align="center">
-									@if ($value_service->status != 0)
-										<form method="post" action="{{ route('ServiceDelete') }}">
+									@if ($value_service->status == 1)
+										<form method="post" action="{{ route('ServiceView') }}">
 											@csrf
 											<input type="hidden" name="service_id" value="{{ $value_service->service_id }}">
-											<input type="hidden" name="status" value="0">
+											<input type="hidden" name="active" value="delete">
 											<button style="border: none; padding: 0; background: none;" type="submit">
 												<img src="{{ URL::asset('assets/images/trash.png') }}" width="35">
 											</button>
@@ -99,29 +100,32 @@
 							<label style="padding-left: 10px;">
 								<input type="text" onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลข'); this.value='';}" class="form-control" id="tel" name="tel" maxlength="10" required="">
 							</label>
+							<span id="error_tel" style="color: red;"></span>
 						</div>
 						<div class="form-group">
 							<label>อาคาร </label>
 							<label style="padding-left: 10px;">
 								<select class="form-control" id="building" style="padding-left: 10px;" name="building" required="">
-									<option disabled selected>-- เลือกอาคาร --</option>
+									<option disabled selected value="">-- เลือกอาคาร --</option>
 									@for($i=1; $i <= 11; $i++)
 										<option value="{{ $i }}">{{ $i }}</option>
 									@endfor
 								</select>
+								<span id="error_building" style="color: red;"></span>
 							</label>
 							<label style="padding-left: 20px;">ชั้น </label>
 							<label style="padding-left: 10px;">
 								<select class="form-control" id="floor" style="padding-left: 10px;" name="floor" required>
-									<option disabled selected>-- เลือกชั้น --</option>
+									<option disabled selected value="">-- เลือกชั้น --</option>
 									@for($i=1; $i <= 7; $i++)
 										<option value="{{ $i }}">{{ $i }}</option>
 									@endfor
 								</select>
+								<span id="error_floor" style="color: red;"></span>
 							</label>
 						</div>
 						<hr>
-						<div class="form-group" id="menurepairradiobutton">
+						<div class="form-group" id="menurepairradiobutton" id="menuservice_id">
 							<label>รายการแจ้งซ่อม</label>
 							@foreach($data_menuservice as $key_menuservice => $value_menuservice)
 								<div style="padding-left: 50px;">
@@ -129,17 +133,20 @@
 									<label style="padding-left: 5px;">{{ $value_menuservice }}</label>
 								</div>
 							@endforeach
+							<span id="error_menuservice_id" style="color: red;"></span>
 						</div>
 						<div class="form-group">
 							<label>รายละเอียด </label>
 							<textarea class="form-control" style="height: 150px;" id="description" name="description" required=""></textarea>
+							<span id="error_discription" style="color: red;"></span>
+
 						</div>
 						<div class="form-group">
 							<label>ภาพประกอบ </label>
 							<input type="file" name="picture" class="form-control">
 						</div>
 						<input type="hidden" id="status" name="status" value="1">
-						<button type="submit" class="btnSubmit" id="btnSubmit">ส่งซ่อม</button>
+						<center><button type="submit" class="btnSubmit" id="btnSubmit">ส่งซ่อม</button></center>
 					</div>
 				</form>
 			</div>
@@ -150,8 +157,70 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#tableService').DataTable({
-				// "order": [[ 0, "desc" ]],
+				"order": [[ 0, "desc" ]],
 				"scrollX": true
+			});
+
+			$("#building").focusout(function(){
+				if ($(this).val()=='') {
+					$(this).css("border-color", "#FF0000");
+					$('#btnSubmit').attr('disabled',true);
+					$("#error_building").text("* กรุณาเลือกอาคาร");
+				} else {
+					$(this).css("border-color", "#2eb82e");
+					$('#btnSubmit').attr('disabled',false);
+					$("#error_building").text("");
+				}
+			});
+
+			$("#floor").focusout(function(){
+				if ($(this).val()=='') {
+					$(this).css("border-color", "#FF0000");
+					$('#btnSubmit').attr('disabled',true);
+					$("#error_floor").text("* กรุณาเลือกชั้น");
+				} else {
+					$(this).css("border-color", "#2eb82e");
+					$('#btnSubmit').attr('disabled',false);
+					$("#error_floor").text("");
+				}
+			});
+
+			$("#tel").focusout(function(){
+				if ($(this).val()=='') {
+					$(this).css("border-color", "#FF0000");
+					$('#btnSubmit').attr('disabled',true);
+					$("#error_tel").text("* กรุณากรอกเบอร์โทรศัพท์");
+				} else {
+					$(this).css("border-color", "#2eb82e");
+					$('#btnSubmit').attr('disabled',false);
+					$("#error_tel").text("");
+				}
+			});
+
+			$("#description").focusout(function(){
+				// var SpacialCharacter = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
+				var SpacialCharacter = /[`~!@#$%^&*()_|+\-=?;:'"<>\{\}\[\]\\\/]/gi;
+
+				if ($(this).val()=='') {
+					$(this).css("border-color", "#FF0000");
+					$('#btnSubmit').attr('disabled',true);
+					$("#error_discription").text("* กรุณากรอกรายละเอียด");
+				} else {
+					$(this).css("border-color", "#2eb82e");
+					$('#btnSubmit').attr('disabled',false);
+					$("#error_discription").text("");
+
+					if ($(this).val().match(SpacialCharacter)) {
+						$(this).css("border-color", "#FF0000");
+						$('#btnSubmit').attr('disabled',true);
+						$("#error_discription").text("* ห้ามใส่อักขระพิเศษ");
+						$("#description").focus();
+					} else {
+						$(this).css("border-color", "#2eb82e");
+						$('#btnSubmit').attr('disabled',false);
+						$("#error_discription").text("");
+					}
+				}
 			});
 		});
 	</script>

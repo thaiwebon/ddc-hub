@@ -7,12 +7,25 @@ h3{
     border: 0px;
     border-radius: 3px;
     color: white;
-    width: 100px;
+    width: 200px;
     height: 40px;
 }
 
 .btnSubmit:hover{
     background-color: #3399FF;
+}
+
+.btnCancel{
+    background-color: #fc0107;
+    border: 0px;
+    border-radius: 3px;
+    color: white;
+    width: 200px;
+    height: 40px;
+}
+
+.btnCancel:hover{
+    background-color: #fd8008;
 }
 
 /*popup*/
