@@ -62,7 +62,7 @@
 				@endif
 				@if($data_service->data_date_success)
 					<div class="form-group">
-						<label>วันที่เสร็จงาน :: </label>
+						<label>วันที่ประเมิน :: </label>
 						<label class="data">{{ $data_service->data_date_success }}</label>
 					</div>
 				@endif

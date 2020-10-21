@@ -62,7 +62,7 @@ class serviceController extends Controller
        return $staff_ref;
     }
 
-    public function GetDataFirstService(int $value)
+    public function GetDataViewService(int $value)
     {
         $query_service = DBservice::
                             select(
@@ -89,10 +89,41 @@ class serviceController extends Controller
         return $query_service;
     }
 
+    public function GetDataScoreService()
+    {
+        $query_sore = DBservice::
+                            select(
+                                'service_id',
+                                'data_date',
+                                'name',
+                                'department',
+                                'tel',
+                                'building',
+                                'floor',
+                                'menuservice_id',
+                                'description',
+                                'picture',
+                                'staff_id',
+                                'data_date_start',
+                                'data_date_success',
+                                'comment',
+                                'status',
+                                'data_date_cancel'
+                            )
+                            ->where('userid',Session::get('userid'))
+                            ->where('status',2)
+                            ->first();
+
+        return $query_sore;
+    }
+
     public function ServiceLoad()
     {
     	$data_service		=	$this->GetAllDataService();
     	$data_menuservice	=	$this->GetDataMenuService();
+        $chk_score          =   $this->GetDataScoreService();
+        $data_staff         =   $this->GetDataStaff();
+        // dd($chk_score);
     	$status = [
     		'0'	=>	'ยกเลิกการแจ้งซ่อม',
     		'1'	=>	'แจ้งซ่อม',
@@ -100,16 +131,28 @@ class serviceController extends Controller
     		'3'	=>	'เสร็จสิ้น'
     	];
 
-    	return view('service.form', [
-    		'data_service' 		=>	$data_service,
-    		'data_menuservice'	=>	$data_menuservice,
-    		'data_status'		=>	$status
-    	]);
+    
+        if($chk_score) {
+            return view('service.score', [
+                'data_staff'        =>  $data_staff,
+                'data_service'      =>  $chk_score,
+                'data_menuservice'  =>  $data_menuservice,
+                'data_status'       =>  $status
+            ]);
+        } else {
+            return view('service.form', [
+                'data_service'      =>  $data_service,
+                'data_menuservice'  =>  $data_menuservice,
+                'data_status'       =>  $status
+            ]);
+        }
+
+    	
     }
 
     public function ViewService(Request $request)
     {
-        $data_service       =   $this->GetDataFirstService($request->service_id);
+        $data_service       =   $this->GetDataViewService($request->service_id);
         $data_menuservice   =   $this->GetDataMenuService();
         $data_staff         =   $this->GetDataStaff();
         $active             =   $request->active;
@@ -131,7 +174,7 @@ class serviceController extends Controller
 
     public function AdminViewService(Request $request)
     {
-        $data_service       =   $this->GetDataFirstService($request->value);
+        $data_service       =   $this->GetDataViewService($request->value);
         $data_menuservice   =   $this->GetDataMenuService();
         $data_staff         =   $this->GetDataStaff();
         $status = [
@@ -245,7 +288,22 @@ class serviceController extends Controller
         ];
 
         $update_staffid_service = DBservice::where('service_id',$request->service_id)
-                                ->update($data_recive_service);
+                                    ->update($data_recive_service);
+
+        return redirect()->route('ServiceForm');
+    }
+
+    public function UpdateScore(Request $request)
+    {
+        $data_score = [
+            'service_id'        =>  $request->service_id,
+            'score'             =>  $request->score,
+            'status'            =>  $request->status,
+            'data_date_success' =>  date('Y-m-d H:i:s')
+        ];
+
+        $update_score = DBservice::where('service_id', $request->service_id)
+                        ->update($data_score);
 
         return redirect()->route('ServiceForm');
     }

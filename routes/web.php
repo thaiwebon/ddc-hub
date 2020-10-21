@@ -26,6 +26,7 @@ Route::prefix('service')->group(function(){
 		Route::post('/ViewService', 'Service\serviceController@ViewService')->name('ServiceView');
 		Route::post('/InsertService', 'Service\serviceController@InsertService')->name('ServiceInsert');
 		Route::post('/DeleteService', 'Service\serviceController@DeleteService')->name('ServiceDelete');
+		Route::post('/UpdateScore', 'Service\serviceController@UpdateScore')->name('ServiceScore');
 	});
 
 	Route::prefix('admin')->group(function(){
