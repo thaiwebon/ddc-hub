@@ -29,7 +29,15 @@
 					</thead>
 					<tbody>
 						@foreach($data_service as $value_service)
-							<tr>
+							@if($value_service->status == 0)
+								<tr style="color: #800002;">
+							@elseif($value_service->status == 1)
+								<tr style="color: #fc0107;">
+							@elseif($value_service->status == 2)
+								<tr style="color: #fd8008;">
+							@elseif($value_service->status == 3)
+								<tr style="color: #108040;">
+							@endif
 								<td>
 									{{ $value_service->service_id }}
 								</td>
