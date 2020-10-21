@@ -151,6 +151,8 @@ class serviceController extends Controller
 
     public function InsertService(Request $request)
     {
+        $data_menuservice   =   $this->GetDataMenuService();
+
     	if ($request->hasFile('picture')) {
     		$file_picture = $request->file('picture');
 
@@ -179,6 +181,8 @@ class serviceController extends Controller
     	$data_service->picture 			=	$filename_picture;
     	$data_service->status 			=	$request->status;
 
+        // dd($data_menuservice[$request->menuservice_id]);
+
     	try {
 	    	if ($data_service->save()) {
                 // $stickerPkg = 2; //stickerPackageId
@@ -188,7 +192,7 @@ class serviceController extends Controller
 
 
                 define("LINEAPI","https://notify-api.line.me/api/notify");
-                define("MESSAGE","งานแจ้งซ่อม\nหมายเลขงาน ::".$filename_picture);
+                define("MESSAGE","งานแจ้งซ่อม\nหมายเลขงาน ::".time().$request->building.$request->floor."\nวัน-เวลา แจ้งซ่อม :: ".date('Y-m-d H:i:s')."\nขื่อ - นามสกุล ".$request->name."\nหน่วยงาน :: ".$request->department."\nอาคาร :: ".$request->building." ชั้น :: ".$request->floor."\nแจ้งปัญหา :: ".$data_menuservice[$request->menuservice_id]."\nรายละเอียด :: ".$request->description."\nเบอร์โทรศัพท์ :: ".$request->tel."\nกดรับงาน :: http://ddc-hub.local/service/admin/AdminViewService/".time().$request->building.$request->floor);
                 // define("MESSAGE","งานแจ้งซ่อม");
                 define("TOKEN","DKzPT1p24lgNf56AWrFMKeoZSTHQm2OMkN53Hh5DW1Y");
                 $data = array(
