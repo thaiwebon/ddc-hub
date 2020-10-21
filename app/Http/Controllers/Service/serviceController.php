@@ -235,7 +235,7 @@ class serviceController extends Controller
                 define("LINEAPI","https://notify-api.line.me/api/notify");
                 define("MESSAGE","\nงานแจ้งซ่อม\nหมายเลขงาน ::".time().$request->building.$request->floor."\nวัน-เวลา แจ้งซ่อม :: ".date('Y-m-d H:i:s')."\nขื่อ - นามสกุล ".$request->name."\nหน่วยงาน :: ".$request->department."\nอาคาร :: ".$request->building." ชั้น :: ".$request->floor."\nแจ้งปัญหา :: ".$data_menuservice[$request->menuservice_id]."\nรายละเอียด :: ".nl2br($request->description)."\nเบอร์โทรศัพท์ :: ".$request->tel."\nกดรับงาน :: http://ddc-hub.local/service/admin/AdminViewService/".time().$request->building.$request->floor);
                 // define("MESSAGE","งานแจ้งซ่อม");
-                define("TOKEN","DKzPT1p24lgNf56AWrFMKeoZSTHQm2OMkN53Hh5DW1Y");
+                define("TOKEN","7D3DGDfaZEfMiQPjoJGAEtmhY6UQjHyJa2XNyvUJBBK");
                 $data = array(
                             'message' => MESSAGE,
                             // 'stickerPackageId'=>$stickerPkg,
