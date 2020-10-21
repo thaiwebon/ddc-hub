@@ -228,8 +228,8 @@ class serviceController extends Controller
 	    	if ($data_service->save()) {
                 // $stickerPkg = 2; //stickerPackageId
                 // $stickerId = 34;
-                // $image_thumbnail_url = 'http://ddc-hub.local/storage/img/service/'.$filename_picture; 
-                // $image_fullsize_url = 'http://ddc-hub.local/storage/img/service/'.$filename_picture;
+                $image_thumbnail_url = 'http://203.157.41.67/storage/img/service/'.$filename_picture; 
+                $image_fullsize_url = 'http://203.157.41.67/storage/img/service/'.$filename_picture;
 
 
                 define("LINEAPI","https://notify-api.line.me/api/notify");
@@ -240,8 +240,8 @@ class serviceController extends Controller
                             'message' => MESSAGE,
                             // 'stickerPackageId'=>$stickerPkg,
                             // 'stickerId'=>$stickerId,
-                            // 'imageThumbnail' => $image_thumbnail_url,
-                            // 'imageFullsize' => $image_fullsize_url,
+                            'imageThumbnail' => $image_thumbnail_url,
+                            'imageFullsize' => $image_fullsize_url,
                         );
                 $data = http_build_query($data,'','&');
                 $headerOptions = array(
