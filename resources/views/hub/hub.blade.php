@@ -20,7 +20,7 @@
 			<img src="{{URL::asset('images/icon/dashboard_icon.png')}}" width="200" height="200">
 			<label>Dashboard</label>
 		</div> -->
-		<div class="card card-1" onclick="window.location.href = '{{ url('formEmail') }}';">
+		<div class="card card-1">
 			<img src="{{URL::asset('images/icon/email_icon.png')}}" width="200" height="200">
 			<label>MailGoThai Register</label>
 		</div>
@@ -29,7 +29,7 @@
 			<img src="{{URL::asset('images/icon/vpn_icon.png')}}" width="200" height="200">
 			<label>VPN</label>
 		</div>
-		<div class="card card-1" onclick="window.location = '{{ url('') }}'">
+		<div class="card card-1">
 			<img src="{{URL::asset('images/icon/ad_icon.png')}}" width="200" height="200">
 			<label>AD</label>
 		</div>
