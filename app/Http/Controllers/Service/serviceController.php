@@ -13,15 +13,15 @@ use redirect;
 
 class serviceController extends Controller
 {
-    public function chkAuthen()
-    {
-    	if (Session::has('name')) {
-    		$ServiceLoad = $this->ServiceLoad();
-    		return $ServiceLoad;
-    	} else {
-    		return redirect()->route('index');
-    	}
-    }
+    // public function chkAuthen()
+    // {
+    // 	if (Session::has('name')) {
+    // 		$ServiceLoad = $this->ServiceLoad();
+    // 		return $ServiceLoad;
+    // 	} else {
+    // 		return redirect()->route('index');
+    // 	}
+    // }
 
     public function GetAllDataService()
     {
