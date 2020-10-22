@@ -150,7 +150,7 @@
 
 						</div>
 						<div class="form-group">
-							<label>ภาพประกอบ </label>
+							<label>ภาพประกอบ (หากไม่มี ไม่จำเป็นต้องใส่)</label>
 							<input type="file" name="picture" class="form-control">
 						</div>
 						<input type="hidden" id="status" name="status" value="1">
