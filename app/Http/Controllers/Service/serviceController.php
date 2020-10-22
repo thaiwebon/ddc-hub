@@ -16,8 +16,13 @@ class serviceController extends Controller
     public function chkAuthen()
     {
     	if (Session::has('name')) {
-    		$ServiceLoad = $this->ServiceLoad();
-    		return $ServiceLoad;
+            if (Session::get('lvs') == 3) {
+                $ServiceAdminLoad = $this->ServiceAdminLoad();
+                return $ServiceAdminLoad;
+            } else {
+                $ServiceLoad = $this->ServiceLoad();
+                return $ServiceLoad;
+            }
     	} else {
     		return redirect()->route('index');
     	}
@@ -29,15 +34,41 @@ class serviceController extends Controller
     	$query_all_service = DBservice::
         						select(
         							'service_id',
-        							'data_date',
-        							'name',
-        							'department',
-        							'menuservice_id',
-        							'status'
+                                    'data_date',
+                                    'name',
+                                    'department',
+                                    'tel',
+                                    'building',
+                                    'floor',
+                                    'menuservice_id',
+                                    'description',
+                                    'picture',
+                                    'staff_id',
+                                    'data_date_start',
+                                    'data_date_success',
+                                    'comment',
+                                    'status',
+                                    'data_date_cancel'
         						)
-        						->where('userid',Session::get('userid'))
         						->get();
 		return $query_all_service;
+    }
+
+    public function GetUserDataService()
+    {
+        $userid = Session::get('userid');
+        $query_user_service = DBservice::
+                                select(
+                                    'service_id',
+                                    'data_date',
+                                    'name',
+                                    'department',
+                                    'menuservice_id',
+                                    'status'
+                                )
+                                ->where('userid',Session::get('userid'))
+                                ->get();
+        return $query_user_service;
     }
 
     public function GetDataMenuService()
@@ -119,7 +150,7 @@ class serviceController extends Controller
 
     public function ServiceLoad()
     {
-    	$data_service		=	$this->GetAllDataService();
+    	$data_service		=	$this->GetUserDataService();
     	$data_menuservice	=	$this->GetDataMenuService();
         $chk_score          =   $this->GetDataScoreService();
         $data_staff         =   $this->GetDataStaff();
@@ -148,6 +179,27 @@ class serviceController extends Controller
         }
 
     	
+    }
+
+    public function ServiceAdminLoad()
+    {
+        $data_service       =   $this->GetAllDataService();
+        $data_menuservice   =   $this->GetDataMenuService();
+        $chk_score          =   $this->GetDataScoreService();
+        $data_staff         =   $this->GetDataStaff();
+        $status = [
+            '0' =>  'ยกเลิกการแจ้งซ่อม',
+            '1' =>  'แจ้งซ่อม',
+            '2' =>  'กำลังดำเนินการ',
+            '3' =>  'เสร็จสิ้น'
+        ];
+
+        return view('service.dashboard_service', [
+            'data_staff'        =>  $data_staff,
+            'data_service'      =>  $chk_score,
+            'data_menuservice'  =>  $data_menuservice,
+            'data_status'       =>  $status
+        ]);
     }
 
     public function ViewService(Request $request)
@@ -211,7 +263,7 @@ class serviceController extends Controller
 
     	$data_service = new DBservice;
 
-    	$data_service->service_id		=	time();
+    	$data_service->service_id		=	$request->building.time().$request->floor;
     	$data_service->userid			=	Session::get('userid');
     	$data_service->data_date 		=	date('Y-m-d H:i:s');
     	$data_service->name 			=	$request->name;
@@ -235,8 +287,8 @@ class serviceController extends Controller
                 define("LINEAPI","https://notify-api.line.me/api/notify");
                 define("MESSAGE","\nงานแจ้งซ่อม\nหมายเลขงาน ::".time().$request->building.$request->floor."\nวัน-เวลา แจ้งซ่อม :: ".formatDateThai(date('Y-m-d H:i:s'))."\nขื่อ - นามสกุล ".$request->name."\nหน่วยงาน :: ".$request->department."\nอาคาร :: ".$request->building." ชั้น :: ".$request->floor."\nแจ้งปัญหา :: ".$data_menuservice[$request->menuservice_id]."\nรายละเอียด :: ".nl2br($request->description)."\nเบอร์โทรศัพท์ :: ".$request->tel."\nกดรับงาน :: http://service.ddc.moph.go.th/service/admin/AdminViewService/".time().$request->building.$request->floor);
                 // define("MESSAGE","งานแจ้งซ่อม");
-                define("TOKEN","7D3DGDfaZEfMiQPjoJGAEtmhY6UQjHyJa2XNyvUJBBK");
-                // define("TOKEN","DKzPT1p24lgNf56AWrFMKeoZSTHQm2OMkN53Hh5DW1Y");
+                // define("TOKEN","7D3DGDfaZEfMiQPjoJGAEtmhY6UQjHyJa2XNyvUJBBK");
+                define("TOKEN","DKzPT1p24lgNf56AWrFMKeoZSTHQm2OMkN53Hh5DW1Y");
                 
                 $data = array(
                             'message' => MESSAGE,

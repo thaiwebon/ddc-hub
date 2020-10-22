@@ -28,6 +28,7 @@ class authenController extends Controller
 		Session::put('userid', $data_search[0]->userid);
 		Session::put('name', $data_search[0]->username);
 		Session::put('department', $data_search[0]->office_text);
+		Session::put('lvs', $data_search[0]->lvs);
 		// session()->forget(['name']);
 		return response()->json(['data_value'=> $data_search]);
     }

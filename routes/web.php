@@ -22,7 +22,7 @@ Route::get('/hub', 'Hub\hubController@chkAuthen')->name('hub');
 
 Route::prefix('service')->group(function(){
 	Route::prefix('users')->group(function(){
-		Route::get('/FormService', 'Service\serviceController@chkAuthen')->name('ServiceForm');
+		Route::get('/Service', 'Service\serviceController@chkAuthen')->name('ServiceForm');
 		Route::post('/ViewService', 'Service\serviceController@ViewService')->name('ServiceView');
 		Route::post('/InsertService', 'Service\serviceController@InsertService')->name('ServiceInsert');
 		Route::post('/DeleteService', 'Service\serviceController@DeleteService')->name('ServiceDelete');
