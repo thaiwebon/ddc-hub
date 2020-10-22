@@ -22,5 +22,5 @@
 	    					"พฤศจิกายน",
 	    					"ธันวาคม");
 	    $strMonthThai=$strMonthCut[$strMonth];
-	    return "วันที่ :: $strDay $strMonthThai $strYear เวลา :: $strHour:$strMinute";
+	    return "วันที่ :: $strDay $strMonthThai $strYear เวลา :: $strHour:$strMinute น.";
 	}
