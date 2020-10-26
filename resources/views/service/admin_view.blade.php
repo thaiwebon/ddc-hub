@@ -45,7 +45,7 @@
 					</div>
 					<div class="form-group">
 						<label>รายละเอียด :: </label>
-						<label class="data">{{ $data_service->description }}</label>
+						<label class="data">{{ nl2br($data_service->description) }}</label>
 					</div>
 					<div class="form-group">
 						<label>รูปภาพประกอบ :: </label><br/>

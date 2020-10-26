@@ -43,7 +43,7 @@
 				</div>
 				<div class="form-group">
 					<label>รายละเอียด :: </label>
-					<label class="data">{{ $data_service->description }}</label>
+					<label class="data">{{ nl2br($data_service->description) }}</label>
 				</div>
 				@if($data_service->picture)
 					<div class="form-group">
