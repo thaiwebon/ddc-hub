@@ -13,6 +13,15 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
+				@if(session()->has('alert'))
+				    <div class="alert alert-danger">
+				        {{ session()->get('alert') }}
+				    </div>
+				@elseif(session()->has('alertSendFormSuccess'))
+					<div class="alert alert-success">
+				        {{ session()->get('alertSendFormSuccess') }}
+				    </div>
+				@endif
 				<center><h3><label>รายการแจ้งซ่อม</label></h3></center>
 				<table id="tableService" class="display" style="width:100%">
 					<thead>

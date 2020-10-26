@@ -10,6 +10,13 @@
 		}
 	</style>
 @endsection
+@section('dataTable')
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+@endsection
+@section('canvasJS')
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+@endsection
 @section('content')
 	<div class="container">
 		<div class="row">
@@ -25,10 +32,49 @@
 							<th>รายการแจ้งซ่อม</th>
 							<th>สถานะ</th>
 							<th>รายละเอียด</th>
-							<th>ยกเลิกแจ้งซ่อม</th>
 						</tr>
 					</thead>
 					<tbody>
+						@foreach($data_service as $value_service)
+							@if($value_service->status == 0)
+								<tr style="color: #800002;">
+							@elseif($value_service->status == 1)
+								<tr style="color: #fc0107;">
+							@elseif($value_service->status == 2)
+								<tr style="color: #fd8008;">
+							@elseif($value_service->status == 3)
+								<tr style="color: #108040;">
+							@endif
+								<td>
+									{{ $value_service->service_id }}
+								</td>
+								<td>
+									{{ $value_service->name }}
+								</td>
+								<td>
+									{{ $value_service->department }}
+								</td>
+								<td>
+									{{ formatDateThai($value_service->data_date) }}
+								</td>
+								<td>
+									{{ $data_menuservice[$value_service->menuservice_id] }}
+								</td>
+								<td>
+									{{ $data_status[$value_service->status] }}
+								</td>
+								<td align="center">
+									<form method="post" action="{{ route('ServiceView') }}">
+										@csrf
+										<input type="hidden" name="service_id" value="{{ $value_service->service_id }}">
+										<input type="hidden" name="active" value="view">
+										<button style="border: none; padding: 0; background: none;" type="submit">
+											<img src="{{ URL::asset('assets/images/icon-repair.jpg') }}" width="40">
+										</button>
+									</form>
+								</td>
+							</tr>
+						@endforeach
 					</tbody>
 				</table>
 			</div>
@@ -39,7 +85,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#tableService').DataTable({
-				"order": [[ 0, "desc" ]],
+				"order": [[ 3, "desc" ]],
 				"scrollX": true
 			});
 		});
