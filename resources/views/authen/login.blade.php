@@ -1,6 +1,7 @@
 @extends('authen.template')
 @section('content')
 	<div class="containerform">
+		<img src="{{URL::asset('images/icon/it_logo.png')}}" width="60%">
 		<h1>login</h1>
 		<div class="form-input">
 			<input type="text" id="username" onkeyup="liveSearch()">
