@@ -295,7 +295,7 @@ class serviceController extends Controller
                         // $image_fullsize_url = 'http://service.ddc.moph.go.th/storage/img/service/'.$filename_picture;
 
                         define("LINEAPI","https://notify-api.line.me/api/notify");
-                        define("MESSAGE","\nงานแจ้งซ่อม\nหมายเลขงาน ::".time().$request->building.$request->floor."\nวัน-เวลา แจ้งซ่อม :: ".formatDateThai(date('Y-m-d H:i:s'))."\nขื่อ - นามสกุล ".$request->name."\nหน่วยงาน :: ".$request->department."\nอาคาร :: ".$request->building." ชั้น :: ".$request->floor."\nแจ้งปัญหา :: ".$data_menuservice[$request->menuservice_id]."\nรายละเอียด :: ".$request->description."\nเบอร์โทรศัพท์ :: ".$request->tel."\nกดรับงาน :: http://service.ddc.moph.go.th/service/admin/AdminViewService/".time().$request->building.$request->floor);
+                        define("MESSAGE","\nงานแจ้งซ่อม\nหมายเลขงาน ::".time().$request->building.$request->floor."\nวัน-เวลา แจ้งซ่อม :: ".formatDateThai(date('Y-m-d H:i:s'))."\nชื่อ - นามสกุล ".$request->name."\nหน่วยงาน :: ".$request->department."\nอาคาร :: ".$request->building." ชั้น :: ".$request->floor."\nแจ้งปัญหา :: ".$data_menuservice[$request->menuservice_id]."\nรายละเอียด :: ".$request->description."\nเบอร์โทรศัพท์ :: ".$request->tel."\nกดรับงาน :: http://service.ddc.moph.go.th/service/admin/AdminViewService/".time().$request->building.$request->floor);
                         // define("MESSAGE","งานแจ้งซ่อม");
                         define("TOKEN","7D3DGDfaZEfMiQPjoJGAEtmhY6UQjHyJa2XNyvUJBBK");
                         
