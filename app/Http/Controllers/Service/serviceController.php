@@ -54,9 +54,9 @@ class serviceController extends Controller
 		return $query_all_service;
     }
 
-    public function GetUserDataService()
+    public function GetUserDataService($field, $value)
     {
-        $userid = Session::get('userid');
+        
         $query_user_service = DBservice::
                                 select(
                                     'service_id',
@@ -66,9 +66,17 @@ class serviceController extends Controller
                                     'menuservice_id',
                                     'status'
                                 )
-                                ->where('userid',Session::get('userid'))
+                                ->where($field, $value)
                                 ->get();
         return $query_user_service;
+    }
+
+    public function GetDepartmentDataGroupService()
+    {
+        $query_group_department = DBservice::select('department')
+                                    ->groupBy('department')
+                                    ->get();
+        return $query_group_department;
     }
 
     public function GetDataMenuService()
@@ -93,7 +101,7 @@ class serviceController extends Controller
        return $staff_ref;
     }
 
-    public function GetDataViewService(int $value)
+    public function GetDataViewService($field, $value)
     {
         $query_service = DBservice::
                             select(
@@ -114,7 +122,7 @@ class serviceController extends Controller
                                 'status',
                                 'data_date_cancel'
                             )
-                            ->where('service_id',$value)
+                            ->where($field,$value)
                             ->first();
 
         return $query_service;
@@ -150,7 +158,9 @@ class serviceController extends Controller
 
     public function ServiceLoad()
     {
-    	$data_service		=	$this->GetUserDataService();
+        $userid             =   Session::get("userid");
+        $field              =   "userid";
+    	$data_service		=	$this->GetUserDataService($field, $userid);
     	$data_menuservice	=	$this->GetDataMenuService();
         $chk_score          =   $this->GetDataScoreService();
         $data_staff         =   $this->GetDataStaff();
@@ -178,16 +188,16 @@ class serviceController extends Controller
                 'data_status'       =>  $status
             ]);
         }
-
-    	
     }
 
     public function ServiceAdminLoad()
     {
-        $data_service       =   $this->GetAllDataService();
-        $data_menuservice   =   $this->GetDataMenuService();
-        $chk_score          =   $this->GetDataScoreService();
-        $data_staff         =   $this->GetDataStaff();
+        $data_service           =   $this->GetAllDataService();
+        $data_menuservice       =   $this->GetDataMenuService();
+        $chk_score              =   $this->GetDataScoreService();
+        $data_staff             =   $this->GetDataStaff();
+        $data_group_department  =   $this->GetDepartmentDataGroupService();
+
         $status = [
             '0' =>  'ยกเลิกการแจ้งซ่อม',
             '1' =>  'แจ้งซ่อม',
@@ -196,17 +206,19 @@ class serviceController extends Controller
         ];
 
         return view('service.dashboard_service', [
-            'data_staff'        =>  $data_staff,
-            'data_score'        =>  $chk_score,
-            'data_service'      =>  $data_service,
-            'data_menuservice'  =>  $data_menuservice,
-            'data_status'       =>  $status
+            'data_staff'            =>  $data_staff,
+            'data_score'            =>  $chk_score,
+            'data_service'          =>  $data_service,
+            'data_menuservice'      =>  $data_menuservice,
+            'data_status'           =>  $status,
+            'data_group_department' =>  $data_group_department
         ]);
     }
 
     public function ViewService(Request $request)
     {
-        $data_service       =   $this->GetDataViewService($request->service_id);
+        $where              =   "service_id";
+        $data_service       =   $this->GetDataViewService($where, $request->service_id);
         $data_menuservice   =   $this->GetDataMenuService();
         $data_staff         =   $this->GetDataStaff();
         $active             =   $request->active;
@@ -228,7 +240,8 @@ class serviceController extends Controller
 
     public function AdminViewService(Request $request)
     {
-        $data_service       =   $this->GetDataViewService($request->value);
+        $where              =   "service_id";
+        $data_service       =   $this->GetDataViewService($where, $request->value);
         $data_menuservice   =   $this->GetDataMenuService();
         $data_staff         =   $this->GetDataStaff();
         $status = [
@@ -295,7 +308,7 @@ class serviceController extends Controller
                         // $image_fullsize_url = 'http://service.ddc.moph.go.th/storage/img/service/'.$filename_picture;
 
                         define("LINEAPI","https://notify-api.line.me/api/notify");
-                        define("MESSAGE","\nงานแจ้งซ่อม\nหมายเลขงาน ::".$request->building.time().$request->floor."\nวัน-เวลา แจ้งซ่อม :: ".formatDateThai(date('Y-m-d H:i:s'))."\nชื่อ - นามสกุล ".$request->name."\nหน่วยงาน :: ".$request->department."\nอาคาร :: ".$request->building." ชั้น :: ".$request->floor."\nแจ้งปัญหา :: ".$data_menuservice[$request->menuservice_id]."\nรายละเอียด :: ".$request->description."\nเบอร์โทรศัพท์ :: ".$request->tel."\nกดรับงาน :: http://service.ddc.moph.go.th/service/admin/AdminViewService/".time().$request->building.$request->floor);
+                        define("MESSAGE","\nงานแจ้งซ่อม\nหมายเลขงาน ::".$request->building.time().$request->floor."\nวัน-เวลา แจ้งซ่อม :: ".formatDateThai(date('Y-m-d H:i:s'))."\nชื่อ - นามสกุล ".$request->name."\nหน่วยงาน :: ".$request->department."\nอาคาร :: ".$request->building." ชั้น :: ".$request->floor."\nแจ้งปัญหา :: ".$data_menuservice[$request->menuservice_id]."\nรายละเอียด :: ".$request->description."\nเบอร์โทรศัพท์ :: ".$request->tel."\nกดรับงาน :: http://service.ddc.moph.go.th/service/admin/AdminViewService/".$request->building.time().$request->floor);
                         // define("MESSAGE","งานแจ้งซ่อม");
                         define("TOKEN","7D3DGDfaZEfMiQPjoJGAEtmhY6UQjHyJa2XNyvUJBBK");
                         
@@ -378,5 +391,30 @@ class serviceController extends Controller
                         ->update($data_score);
 
         return redirect()->route('ServiceForm');
+    }
+
+    public function FindDataService(Request $request)
+    {
+        $field                  =   "department";
+        $data_service           =   $this->GetUserDataService($field, $request->department);
+        $data_menuservice       =   $this->GetDataMenuService();
+        $data_staff             =   $this->GetDataStaff();
+        $data_group_department  =   $this->GetDepartmentDataGroupService();
+        $status = [
+            '0' =>  'ยกเลิกการแจ้งซ่อม',
+            '1' =>  'แจ้งซ่อม',
+            '2' =>  'กำลังดำเนินการ',
+            '3' =>  'เสร็จสิ้น'
+        ];
+        
+        return Response($output);
+        // return response()->json($data_service);
+        // return view('service.dashboard_service' ,[
+        //     'data_service'          =>  $data_service,
+        //     'data_menuservice'      =>  $data_menuservice,
+        //     'data_staff'            =>  $data_staff,
+        //     'data_status'           =>  $status,
+        //     'data_group_department' =>  $data_group_department
+        // ]);
     }
 }

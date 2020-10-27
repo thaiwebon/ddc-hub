@@ -21,6 +21,15 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
+				<div class="form-group" style="text-align: center;">
+					<label>เลือกหน่วยงาน</label>
+					<select class="form-control" style="text-align: center;" id="select_department">
+						<option value="">-- เลือกหน่วยงาน --</option>
+						@foreach($data_group_department as $value_group_department)
+							<option value="{{ $value_group_department->department }}">{{ $value_group_department->department }}</option>
+						@endforeach
+					</select>
+				</div>
 				<center><h3><label>รายการแจ้งซ่อม</label></h3></center>
 				<table id="tableService" class="display" style="width:100%">
 					<thead>
@@ -87,6 +96,20 @@
 			$('#tableService').DataTable({
 				"order": [[ 3, "desc" ]],
 				"scrollX": true
+			});
+
+			$('#select_department').on("change", function(){
+				var department = $("#select_department").val();
+				// console.log(department);
+				$.ajax({
+					type: "GET",
+					url: "{{ route('ServiceFindData') }}",
+					data: {"department":department},
+					success:function(data_service){
+						console.log(data_service);
+						// $('#tableService').html(data_service);
+					}
+				})
 			});
 		});
 	</script>

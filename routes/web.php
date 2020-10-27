@@ -31,6 +31,7 @@ Route::prefix('service')->group(function(){
 
 	Route::prefix('admin')->group(function(){
 		Route::get('/AdminViewService/{value}', 'Service\serviceController@AdminViewService')->name('ServiceAdminView');
+		Route::get('/FindDataService', 'Service\serviceController@FindDataService')->name('ServiceFindData');
 		Route::post('/ReciveService', 'Service\serviceController@ReciveService')->name('ServiceRecive');
 	});
 });
