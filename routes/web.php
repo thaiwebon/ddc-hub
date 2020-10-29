@@ -37,7 +37,9 @@ Route::prefix('service')->group(function(){
 });
 
 Route::prefix('mailgothai')->group(function(){
-
+	Route::prefix('users')->group(function(){
+		
+	});
 });
 
 Route::prefix('ad')->group(function(){
