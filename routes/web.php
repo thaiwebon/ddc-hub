@@ -76,3 +76,5 @@ Route::get('/clear-view',function(){
 	return "View is cleared";
 });
 
+
+test
