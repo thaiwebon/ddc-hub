@@ -310,9 +310,9 @@ class serviceController extends Controller
                         define("LINEAPI","https://notify-api.line.me/api/notify");
                         define("MESSAGE","\nงานแจ้งซ่อม\nหมายเลขงาน ::".$request->building.time().$request->floor."\nวัน-เวลา แจ้งซ่อม :: ".formatDateThai(date('Y-m-d H:i:s'))."\nชื่อ - นามสกุล ".$request->name."\nหน่วยงาน :: ".$request->department."\nอาคาร :: ".$request->building." ชั้น :: ".$request->floor."\nแจ้งปัญหา :: ".$data_menuservice[$request->menuservice_id]."\nรายละเอียด :: ".$request->description."\nเบอร์โทรศัพท์ :: ".$request->tel."\nกดรับงาน :: http://service.ddc.moph.go.th/service/admin/AdminViewService/".$request->building.time().$request->floor);
                         // define("MESSAGE","งานแจ้งซ่อม");
-                        define("TOKEN","7D3DGDfaZEfMiQPjoJGAEtmhY6UQjHyJa2XNyvUJBBK");
+                        // define("TOKEN","7D3DGDfaZEfMiQPjoJGAEtmhY6UQjHyJa2XNyvUJBBK");
                         
-                        // define("TOKEN","DKzPT1p24lgNf56AWrFMKeoZSTHQm2OMkN53Hh5DW1Y");
+                        define("TOKEN","DKzPT1p24lgNf56AWrFMKeoZSTHQm2OMkN53Hh5DW1Y");
                         //test
                         
                         $data = array(
@@ -396,7 +396,7 @@ class serviceController extends Controller
     public function FindDataService(Request $request)
     {
         $field                  =   "department";
-        $data_service           =   $this->GetUserDataService($field, $request->department);
+        $data_service           =   $this->GetUserDataService($field, $request->select_department);
         $data_menuservice       =   $this->GetDataMenuService();
         $data_staff             =   $this->GetDataStaff();
         $data_group_department  =   $this->GetDepartmentDataGroupService();
@@ -407,8 +407,23 @@ class serviceController extends Controller
             '3' =>  'เสร็จสิ้น'
         ];
         
-        return Response($output);
         // return response()->json($data_service);
+        return redirect()->route('ServiceForm')->with([
+            'data_service'          =>  $data_service,
+            'data_menuservice'      =>  $data_menuservice,
+            'data_staff'            =>  $data_staff,
+            'data_status'           =>  $status,
+            'data_group_department' =>  $data_group_department
+        ]);
+
+        // return view('service.dashboard_service', [
+        //     'data_staff'            =>  $data_staff,
+        //     'data_service'          =>  $data_service,
+        //     'data_menuservice'      =>  $data_menuservice,
+        //     'data_status'           =>  $status,
+        //     'data_group_department' =>  $data_group_department
+        // ]);
+        
         // return view('service.dashboard_service' ,[
         //     'data_service'          =>  $data_service,
         //     'data_menuservice'      =>  $data_menuservice,

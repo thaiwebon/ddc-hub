@@ -22,13 +22,16 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="form-group" style="text-align: center;">
-					<label>เลือกหน่วยงาน</label>
-					<select class="form-control" style="text-align: center;" id="select_department">
-						<option value="">-- เลือกหน่วยงาน --</option>
-						@foreach($data_group_department as $value_group_department)
-							<option value="{{ $value_group_department->department }}">{{ $value_group_department->department }}</option>
-						@endforeach
-					</select>
+					{{-- <form method="post" action="{{ route('ServiceFindData') }}"> --}}
+						@csrf
+						<label>เลือกหน่วยงาน</label>
+						<select class="form-control" style="text-align: center;" name="select_department" id="select_department">
+							<option value="">-- เลือกหน่วยงาน --</option>
+							@foreach($data_group_department as $value_group_department)
+								<option value="{{ $value_group_department->department }}">{{ $value_group_department->department }}</option>
+							@endforeach
+						</select>
+					{{-- </form> --}}
 				</div>
 				<center><h3><label>รายการแจ้งซ่อม</label></h3></center>
 				<table id="tableService" class="display" style="width:100%">
@@ -43,7 +46,7 @@
 							<th>รายละเอียด</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="listService">
 						@foreach($data_service as $value_service)
 							@if($value_service->status == 0)
 								<tr style="color: #800002;">
@@ -73,7 +76,7 @@
 									{{ $data_status[$value_service->status] }}
 								</td>
 								<td align="center">
-									<form method="post" action="{{ route('ServiceView') }}">
+									<form method="post" action="{{ route('ServiceView') }}" >
 										@csrf
 										<input type="hidden" name="service_id" value="{{ $value_service->service_id }}">
 										<input type="hidden" name="active" value="view">
